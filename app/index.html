@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="yarnyardFrontend" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Yarnyard</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+  <ul class="menu">
+    <li><a href="#/dashboard">dashboard</a></li>
+    <li><a href="#/user-list">user list</a></li>
+  </ul>
+
+  <div ng-include="'login/login-form.html'"></div>
+
+  Angular is working if 1 + 2 = {{ 1 + 2 }}
+
+  <div ng-view></div>
+
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-route/angular-route.js"></script>
+  <script src="../node_modules/angular-ui-router/build/angular-ui-router.js"></script>
+  <script src="app.js"></script>
+  <script src="services.js"></script>
+  <script src="dashboard/dashboard.js"></script>
+  <script src="login/login.js"></script>
+  <script src="users/users.js"></script>
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../bower_components/angular-resource/angular-resource.js"></script>
+</body>
+</html>

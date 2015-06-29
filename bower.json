@@ -1,0 +1,18 @@
+{
+  "name": "yarnyard-frontend",
+  "description": "A test frontend for the yarnyard api",
+  "version": "0.0.0",
+  "homepage": "https://github.com/mickadoo/yarnyard-frontend",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "jquery": "2.1.1",
+    "bootstrap": "~3.1.1",
+    "angular-loader": "~1.4.0",
+    "angular-mocks": "~1.4.0",
+    "angular-resource": "~1.3.0",
+    "html5-boilerplate": "~5.2.0"
+  }
+}
