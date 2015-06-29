@@ -6,14 +6,10 @@ angular.module('yarnyardServices', ['ngResource'])
 
     var apiUrl = 'http://api.yarnyard.dev';
 
-    return $resource(apiUrl+'/user', {}, {
-      getAllUsers:
-        {
+    return $resource(apiUrl+'/user/:userId', {}, {
+      getAllUsers: {
           method:'GET',
           isArray:true,
-          headers: {
-            'Authorization': authService.getAuthorizationHeader
-          },
           interceptor: {
             'responseError': function(rejection) {
               if (rejection.status == 401) {
@@ -22,11 +18,15 @@ angular.module('yarnyardServices', ['ngResource'])
               }
             }
           }
-        }
+      },
+      getUser: {
+        method:'GET',
+        isArray:false
+      }
     });
   }
 ])
-.factory('authService',['$rootScope','$http', function($rootScope, $http) {
+.factory('authService',['$http', '$rootScope', function($http, $rootScope) {
 
     var token = '';
 
@@ -43,6 +43,7 @@ angular.module('yarnyardServices', ['ngResource'])
           $http.get(login_url).
           success(function(data, status, headers, config) {
             token = data.access_token;
+            $rootScope.token = token;
           }).
           error(function(data, status, headers, config) {
             token = '';
@@ -50,6 +51,7 @@ angular.module('yarnyardServices', ['ngResource'])
         },
         logout: function() {
           token = null;
+          $rootScope.token = null;
         },
         loggedIn: function () {
           if (token) {
@@ -62,4 +64,18 @@ angular.module('yarnyardServices', ['ngResource'])
           return 'Bearer ' + token;
         }
     }
+}])
+.config(['$httpProvider', function($httpProvider) {
+  $httpProvider.interceptors.push('tokenInterceptor')
+}])
+.factory('tokenInterceptor', ['$rootScope', function ($rootScope) {
+    return {
+      'request': function(config) {
+          if (!config.headers.Authorization && $rootScope.token) {
+            config.headers.Authorization = 'Bearer ' + $rootScope.token
+          }
+
+          return config;
+      },
+    };
 }]);

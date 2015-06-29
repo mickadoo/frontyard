@@ -1,9 +1,9 @@
-<div ng-controller='userCtrl'>
+<div ng-controller='userListCtrl'>
   <h3>User list</h3>
 
   <ul>
     <li ng-repeat='user in allUsers'>
-      Username : {{ user.username }}
+      Username : <a href = "#/user-profile/{{ user.id }}">{{ user.username }}</a>
     </li>
   </ul>
 
