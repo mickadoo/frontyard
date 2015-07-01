@@ -6,7 +6,7 @@ angular.module('yarnyardServices', ['ngResource'])
 
     var apiUrl = 'http://api.yarnyard.dev';
 
-    return $resource(apiUrl+'/user/:userId', {}, {
+    return $resource(apiUrl+'/users/:userId', {}, {
       getAllUsers: {
           method:'GET',
           isArray:true,
@@ -36,7 +36,7 @@ angular.module('yarnyardServices', ['ngResource'])
           var login_url = 'http://api.yarnyard.dev/oauth/v2/token?'
             + 'grant_type=password'
             + '&client_id=1_58yrapmmgqo0kkogs0owks8gcokw0gkc4wc04kwg44c0sgksw0'
-            + '&client_secret=<secret>'
+            + '&client_secret=secret'
             + '&username=' + credentials.username
             + '&password=' + credentials.password
 
@@ -46,6 +46,7 @@ angular.module('yarnyardServices', ['ngResource'])
             $rootScope.token = token;
           }).
           error(function(data, status, headers, config) {
+            alert('login failed');
             token = '';
           });
         },
@@ -62,6 +63,30 @@ angular.module('yarnyardServices', ['ngResource'])
         },
         getAuthorizationHeader: function() {
           return 'Bearer ' + token;
+        },
+        register: function (credentials){
+          var regisrationUrl = 'http://api.yarnyard.dev/users';
+
+          $http.post(regisrationUrl, {
+            username: credentials.username,
+            email: credentials.email,
+            password: credentials.password
+          }).success(function(data){
+            console.log(data);
+          });
+        },
+        confirmMail: function(data) {
+          var confirmationUrl = 'http://api.yarnyard.dev/confirm-email'
+          + '?userId=' + data.userId
+          + '&token=' + data.token;
+
+          $http.post(confirmationUrl)
+          .success(function(data, status, headers, config) {
+            alert('address confirmed');
+          })
+          .error(function(data, status, headers, config) {
+            alert('error confirming email');
+          });
         }
     }
 }])

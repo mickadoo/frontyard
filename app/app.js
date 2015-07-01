@@ -8,7 +8,9 @@ angular.module('yarnyardFrontend',
     'yarnyardServices',
     'yarnyardFrontend.dashboard',
     'yarnyardFrontend.login',
-    'yarnyardFrontend.users'
+    'yarnyardFrontend.users',
+    'yarnyardFrontend.register',
+    'yarnyardFrontend.confirmation'
   ]
 )
 .config(['$routeProvider', function($routeProvider) {
