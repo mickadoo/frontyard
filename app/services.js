@@ -1,12 +1,10 @@
 'use strict';
 
 angular.module('yarnyardServices', ['ngResource'])
-.factory('restService', ['$resource','authService',
-  function($resource, authService){
+.factory('restService', ['$resource','authService', '$rootScope',
+  function($resource, authService, $rootScope){
 
-    var apiUrl = 'http://192.168.56.103';
-
-    return $resource(apiUrl+'/users/:userId', {}, {
+    return $resource($rootScope.apiUrl+'/users/:userId', {}, {
       getAllUsers: {
           method:'GET',
           isArray:true,
@@ -35,7 +33,7 @@ angular.module('yarnyardServices', ['ngResource'])
           // do login
 
             // POST
-            var login_url = 'http://192.168.56.103/oauth/v2/token';
+            var login_url = $rootScope.apiUrl + '/oauth/v2/token';
 
             $http.post(login_url,
                 {
@@ -78,19 +76,15 @@ angular.module('yarnyardServices', ['ngResource'])
           $rootScope.token = null;
         },
         loggedIn: function () {
-          if (token) {
-            return true;
-          }
-
-          return false;
+          return token;
         },
         getAuthorizationHeader: function() {
           return 'Bearer ' + token;
         },
         register: function (credentials){
-          var regisrationUrl = '/users';
+          var registrationUrl = '/users';
 
-          $http.post(regisrationUrl, {
+          $http.post(registrationUrl, {
             username: credentials.username,
             email: credentials.email,
             password: credentials.password
@@ -124,6 +118,6 @@ angular.module('yarnyardServices', ['ngResource'])
           }
 
           return config;
-      },
+      }
     };
 }]);

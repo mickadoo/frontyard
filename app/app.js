@@ -15,4 +15,9 @@ angular.module('yarnyardFrontend',
 )
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/dashboard'});
-}]);
+}])
+.run(
+    function run($rootScope) {
+      $rootScope.apiUrl = configData.apiUrl;
+    }
+);
