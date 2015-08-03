@@ -4,7 +4,7 @@ angular.module('yarnyardServices', ['ngResource'])
 .factory('restService', ['$resource','authService',
   function($resource, authService){
 
-    var apiUrl = 'http://api.yarnyard.dev';
+    var apiUrl = 'http://192.168.56.103';
 
     return $resource(apiUrl+'/users/:userId', {}, {
       getAllUsers: {
@@ -33,22 +33,45 @@ angular.module('yarnyardServices', ['ngResource'])
     return {
         login: function (credentials) {
           // do login
-          var login_url = 'http://api.yarnyard.dev/oauth/v2/token?'
-            + 'grant_type=password'
-            + '&client_id=1_58yrapmmgqo0kkogs0owks8gcokw0gkc4wc04kwg44c0sgksw0'
-            + '&client_secret=secret'
-            + '&username=' + credentials.username
-            + '&password=' + credentials.password
 
-          $http.get(login_url).
-          success(function(data, status, headers, config) {
-            token = data.access_token;
-            $rootScope.token = token;
-          }).
-          error(function(data, status, headers, config) {
-            alert('login failed');
-            token = '';
-          });
+            // POST
+            var login_url = 'http://192.168.56.103/oauth/v2/token';
+
+            $http.post(login_url,
+                {
+                    'grant_type': 'password',
+                    'client_id': '1_37feg9kqp2skwck48kksgkg0sc48s8o4soo4k80cc0ok880c4g',
+                    'client_secret': '4z0zkw1g54gswosg4kkc8scs0wss8w0cwwc4sskco08gcwc404',
+                    'username': credentials.username,
+                    'password': credentials.password
+                }
+            ).
+            success(function(data, status, headers, config) {
+                token = data.access_token;
+                $rootScope.token = token;
+            }).
+            error(function(data, status, headers, config) {
+                alert('login failed');
+                token = '';
+            });
+
+            // GET
+          //var login_url = 'http://192.168.56.103/oauth/v2/token?'
+          //  + 'grant_type=password'
+          //  + '&client_id=1_58yrapmmgqo0kkogs0owks8gcokw0gkc4wc04kwg44c0sgksw0'
+          //  + '&client_secret=secret'
+          //  + '&username=' + credentials.username
+          //  + '&password=' + credentials.password;
+          //
+          //$http.get(login_url).
+          //success(function(data, status, headers, config) {
+          //  token = data.access_token;
+          //  $rootScope.token = token;
+          //}).
+          //error(function(data, status, headers, config) {
+          //  alert('login failed');
+          //  token = '';
+          //});
         },
         logout: function() {
           token = null;
@@ -65,7 +88,7 @@ angular.module('yarnyardServices', ['ngResource'])
           return 'Bearer ' + token;
         },
         register: function (credentials){
-          var regisrationUrl = 'http://api.yarnyard.dev/users';
+          var regisrationUrl = '/users';
 
           $http.post(regisrationUrl, {
             username: credentials.username,
@@ -76,7 +99,7 @@ angular.module('yarnyardServices', ['ngResource'])
           });
         },
         confirmMail: function(data) {
-          var confirmationUrl = 'http://api.yarnyard.dev/confirm-email'
+          var confirmationUrl = '/confirm-email'
           + '?userId=' + data.userId
           + '&token=' + data.token;
 
