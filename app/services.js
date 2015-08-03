@@ -30,11 +30,7 @@ angular.module('yarnyardServices', ['ngResource'])
 
     return {
         login: function (credentials) {
-          // do login
-
-            // POST
             var login_url = $rootScope.apiUrl + '/oauth/v2/token';
-
             $http.post(login_url,
                 {
                     'grant_type': 'password',
@@ -52,24 +48,18 @@ angular.module('yarnyardServices', ['ngResource'])
                 alert('login failed');
                 token = '';
             });
-
-            // GET
-          //var login_url = 'http://192.168.56.103/oauth/v2/token?'
-          //  + 'grant_type=password'
-          //  + '&client_id=1_58yrapmmgqo0kkogs0owks8gcokw0gkc4wc04kwg44c0sgksw0'
-          //  + '&client_secret=secret'
-          //  + '&username=' + credentials.username
-          //  + '&password=' + credentials.password;
-          //
-          //$http.get(login_url).
-          //success(function(data, status, headers, config) {
-          //  token = data.access_token;
-          //  $rootScope.token = token;
-          //}).
-          //error(function(data, status, headers, config) {
-          //  alert('login failed');
-          //  token = '';
-          //});
+        },
+        register: function (credentials) {
+            var registrationUrl = $rootScope.apiUrl + '/users';
+            $http.post(registrationUrl,
+                {
+                    username: credentials.username,
+                    email: credentials.email,
+                    password: credentials.password
+                }
+            ).then(function(data){
+                console.log(data);
+            });
         },
         logout: function() {
           token = null;
@@ -81,19 +71,8 @@ angular.module('yarnyardServices', ['ngResource'])
         getAuthorizationHeader: function() {
           return 'Bearer ' + token;
         },
-        register: function (credentials){
-          var registrationUrl = '/users';
-
-          $http.post(registrationUrl, {
-            username: credentials.username,
-            email: credentials.email,
-            password: credentials.password
-          }).success(function(data){
-            console.log(data);
-          });
-        },
         confirmMail: function(data) {
-          var confirmationUrl = '/confirm-email'
+          var confirmationUrl = $rootScope.apiUrl + '/confirm-email'
           + '?userId=' + data.userId
           + '&token=' + data.token;
 
